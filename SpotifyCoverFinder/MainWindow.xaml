@@ -1,0 +1,24 @@
+﻿<Window x:Class="SpotifyCoverFinder.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SpotifyCoverFinder"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <TextBox x:Name="query" Height="27" Margin="10,10,108,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" KeyDown="query_KeyDown"/>
+        <Button Content="Search" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="93" Height="27" Click="Button_Click"/>
+        <ListView x:Name="imagesList" Margin="10,42,10,10">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 
+            RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
+            ItemWidth="110"
+            MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
+            ItemHeight="110" Cursor="Hand"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+    </Grid>
+</Window>
