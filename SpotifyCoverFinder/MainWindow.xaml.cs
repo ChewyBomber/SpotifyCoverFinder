@@ -76,7 +76,7 @@ namespace SpotifyCoverFinder
                     JEnumerable<JToken> results = o["albums"]["items"].Children();
                     foreach (JToken result in results)
                     {
-                        DownloadCover(result, (string)result["images"].Last["url"]);
+                        DownloadCover(result, (string)result["images"].First["url"]);
                     }
                 }                
             }
@@ -94,8 +94,8 @@ namespace SpotifyCoverFinder
             newImage.Tag = obj;
             newImage.MouseLeftButtonDown += NewImage_MouseLeftButtonDown;
             newImage.MouseRightButtonDown += NewImage_MouseRightButtonDown;
-            newImage.Width = 100;
-            newImage.Height = 100;
+            newImage.Width = 200;
+            newImage.Height = 200;
             newImage.Source = imageData;
             imagesList.Items.Add(newImage);
         }

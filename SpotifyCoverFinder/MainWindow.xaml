@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpotifyCoverFinder"
         mc:Ignorable="d"
-        Title="Spotify Cover Finder" Height="450" Width="800">
+        Title="Spotify Cover Finder" Height="730" Width="900">
     <Grid>
         <TextBox x:Name="query" Height="27" Margin="10,10,144,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" KeyDown="query_KeyDown" TextChanged="query_TextChanged"/>
         <Button x:Name="searchButton" Content="Search" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="93" Height="27" Click="Button_Click" IsEnabled="False"/>
@@ -14,9 +14,10 @@
                 <ItemsPanelTemplate>
                     <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 
             RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
-            ItemWidth="110"
+            ItemWidth="210"
             MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
-            ItemHeight="110" Cursor="Hand"/>
+            ItemHeight="210" Cursor="Hand">
+                    </WrapPanel>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
