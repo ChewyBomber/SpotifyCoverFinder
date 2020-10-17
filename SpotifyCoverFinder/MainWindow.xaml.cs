@@ -19,10 +19,12 @@ namespace SpotifyCoverFinder
         public MainWindow()
         {
             InitializeComponent();
-            token = GetToken();
+            GetToken();
         }
 
-        private string GetToken()
+        private string token = null;
+
+        private void GetToken()
         {
             using (HttpClient client = new HttpClient())
             {
@@ -36,23 +38,39 @@ namespace SpotifyCoverFinder
 
                 var parsedJson = JObject.Parse(responseString);
 
-                return (string)parsedJson["access_token"];
+                if (parsedJson.ContainsKey("error") && (string)parsedJson["error"] == "invalid_client")
+                {
+                    MessageBox.Show("Invalid Token!", "Invalid Token!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Application.Current.Shutdown();
+                }
+
+                token = (string)parsedJson["access_token"];
             }
         }
-        private string token = null;
-        private JEnumerable<JToken> results;
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             imagesList.Items.Clear();
-            // Spotify
             Uri searchURI = new Uri("https://api.spotify.com/v1/search?type=album&market=FR&limit=50&q=" + query.Text);
             using (WebClient client = new WebClient())
             {
                 client.Headers.Add("Accept: application/json");
                 client.Headers.Add("Authorization: Bearer " + token);
-                JObject o = JObject.Parse(client.DownloadString(searchURI));
-                results = o["albums"]["items"].Children();
+                JObject o = null;
+                try
+                {
+                    o = JObject.Parse(client.DownloadString(searchURI));
+                }
+                catch (WebException ex)
+                {
+                    if (((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        // Token expiration
+                        GetToken();
+                        o = JObject.Parse(client.DownloadString(searchURI));
+                    }
+                }
+                JEnumerable<JToken> results = o["albums"]["items"].Children();
                 foreach (JToken result in results)
                 {
                     DownloadCover(result, (string)result["images"].Last["url"]);
