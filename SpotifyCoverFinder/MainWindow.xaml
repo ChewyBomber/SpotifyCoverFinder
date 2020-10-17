@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpotifyCoverFinder"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Spotify Cover Finder" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="query" Height="27" Margin="10,10,108,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" KeyDown="query_KeyDown"/>
-        <Button Content="Search" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="93" Height="27" Click="Button_Click"/>
+        <TextBox x:Name="query" Height="27" Margin="10,10,144,0" TextWrapping="Wrap" VerticalAlignment="Top" VerticalContentAlignment="Center" KeyDown="query_KeyDown" TextChanged="query_TextChanged"/>
+        <Button x:Name="searchButton" Content="Search" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="93" Height="27" Click="Button_Click" IsEnabled="False"/>
         <ListView x:Name="imagesList" Margin="10,42,10,10">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -20,5 +20,6 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
+        <TextBox x:Name="Market" HorizontalAlignment="Right" Height="27" Margin="0,10,107,0" TextWrapping="Wrap" Text="FR" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="32" MaxLength="2" KeyDown="query_KeyDown"/>
     </Grid>
 </Window>

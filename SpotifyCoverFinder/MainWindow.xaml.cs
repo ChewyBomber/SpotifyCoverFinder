@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -51,7 +52,7 @@ namespace SpotifyCoverFinder
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             imagesList.Items.Clear();
-            Uri searchURI = new Uri("https://api.spotify.com/v1/search?type=album&market=FR&limit=50&q=" + query.Text);
+            Uri searchURI = new Uri(String.Format("https://api.spotify.com/v1/search?type=album&market={0}&limit=50&q={1}", Market.Text, query.Text));
             using (WebClient client = new WebClient())
             {
                 client.Headers.Add("Accept: application/json");
@@ -70,11 +71,14 @@ namespace SpotifyCoverFinder
                         o = JObject.Parse(client.DownloadString(searchURI));
                     }
                 }
-                JEnumerable<JToken> results = o["albums"]["items"].Children();
-                foreach (JToken result in results)
+                if (o != null)
                 {
-                    DownloadCover(result, (string)result["images"].Last["url"]);
-                }
+                    JEnumerable<JToken> results = o["albums"]["items"].Children();
+                    foreach (JToken result in results)
+                    {
+                        DownloadCover(result, (string)result["images"].Last["url"]);
+                    }
+                }                
             }
         }
 
@@ -134,8 +138,15 @@ namespace SpotifyCoverFinder
 
         private void query_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter && searchButton.IsEnabled)
+            {
                 Button_Click(this, new RoutedEventArgs());
+            }
+        }
+
+        private void query_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            searchButton.IsEnabled = query.Text != null && query.Text.Length > 0;
         }
     }
 }
